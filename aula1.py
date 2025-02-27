@@ -4,10 +4,7 @@ import flet as ft
 
 
 def main(page: ft.Page):
-    # Aqui eu configurei um elemento de texto
-    texto = ft.Text(value="Bem vindo ao app Godinho World!")
-    # depois eu adicionei o elemento de texto na página
-    page.add(texto)
+    pass
 
 
 ft.app(target=main)
