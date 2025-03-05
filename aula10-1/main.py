@@ -33,12 +33,20 @@ class TodoApp(ft.Column):
         return ft.Column(
             controls=[
                 # Título da aplicação
+                ft.Row([
+                    ft.Text(value="Tarefas",
+                            size=50,
+                            weight="bold",
+                            color=ft.Colors.with_opacity(0.75, "black")
+                            )
+                ],
+                    alignment="center"
+                ),
                 ft.Row(
                     controls=[
-                        ft.Text(value="Tarefas")
+                        self.new_task,
                     ]
                 ),
-                ft.Row(),
                 ft.Column()
             ]
         )
@@ -59,9 +67,7 @@ def main(page: ft.Page):
     page.theme_mode = ft.ThemeMode.LIGHT
     page.update()
 
-    app = TodoApp()
-
-    page.add(app)
+    page.add(TodoApp())
 
 
 ft.app(target=main)
