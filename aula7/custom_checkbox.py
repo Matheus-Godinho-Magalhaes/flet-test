@@ -23,8 +23,8 @@ class Checkbox(ft.Row):
         # Cria um botão de ícone com o ícone de salvar (ft.Icons.SAVE).
         # Esse botão é inicialmente invisível (visible=False).
         # Quando clicado, ele chama o método `save` da classe.
-        self.save_button = ft.IconButton(icon=ft.Icons.SAVE, on_click=self.save,
-                                         visible=False)
+        self.save_button = ft.IconButton(
+            icon=ft.Icons.SAVE, on_click=self.save, visible=False)
 
         # Cria um botão de ícone com o ícone de deletar (ft.Icons.DELETE).
         # Quando clicado, ele chama o método `delete` da classe.
@@ -45,13 +45,31 @@ class Checkbox(ft.Row):
         ]
 
     def edit(self, e):  # Método chamado quando o botão de edição é clicado.
-        # Ainda não implementado. Aqui você pode adicionar a lógica para editar o texto.
-        pass
+        self.edit_button.visible = False
+        self.delete_button.visible = False
+        self.text_view.visible = False
+        self.text_edit.visible = True
+        self.save_button.visible = True
+        # colocando o campor de text_Edit em foco para ser editado
+        self.text_edit.focus()
+        self.update()
 
     def save(self, e):  # Método chamado quando o botão de salvar é clicado.
-        # Ainda não implementado. Aqui você pode adicionar a lógica para salvar o texto editado.
-        pass
+        # salvando o novo valor que estava no campo text_edit para o text_view
+        self.text_view.value = self.text_edit.value
+
+        # ajustando para aparecer apenas os botões necessários
+        self.edit_button.visible = True
+        self.delete_button.visible = True
+        self.text_view.visible = True
+        self.text_edit.visible = False
+        self.save_button.visible = False
+
+        # atualizando a página para mostrar as mudanças
+        self.update()
 
     def delete(self, e):  # Método chamado quando o botão de deletar é clicado.
-        # Ainda não implementado. Aqui você pode adicionar a lógica para deletar o item.
-        pass
+        # Aqui eu apenas estou deixando a instancia invisível
+        self.visible = False
+        # Depois eu atualizo a página
+        self.update()
