@@ -5,17 +5,17 @@ import flet as ft
 
 class Task(ft.Column):
     def __init__(self, task_name, task_status_change, task_delete):
+        super().__init__()
         self.complete = False
         self.task_name = task_name
         self.task_status_change = task_status_change
         self.task_delete = task_delete
 
-        def build(self):
-            self.display_task = ft.Checkbox(
-                value=False,
-                label=self.task_name,
-                on_change=self.status_change,
-            )
+        self.display_task = ft.Checkbox(
+            value=False,
+            label=self.task_name,
+            on_change=self.status_change,
+        )
 
         self.edit_name = ft.TextField(
             expand=True,
@@ -42,19 +42,40 @@ class Task(ft.Column):
         )
 
         self.edit_view = ft.Row(
+            visible=False,
             controls=[
-
+                self.edit_name,
+                ft.IconButton(
+                    icon=ft.Icons.DONE_OUTLINED,
+                    tooltip="Atualizar tarefa",
+                    on_click=self.save_clicked,
+                    icon_color=ft.Colors.GREEN
+                )
             ]
         )
 
+        # Adicionando os controles diretamente ao Column
+        self.controls = [self.display_view, self.edit_view]
+
     def save_clicked(self, e):
-        pass
+        self.display_task.label = self.edit_name.value
+        self.display_view.visible = True
+        self.edit_view.visible = False
+        self.update()
 
     def edit_clicked(self, e):
-        pass
+        self.edit_name.value = self.display_task.label
+        self.edit_view.visible = True
+        self.edit_name.focus()
+        self.display_view.visible = False
+        self.update()
 
     def delete_clicked(self, e):
-        pass
+        self.task_delete(self)
+
+    def status_change(self, e):
+        self.complete = self.display_task.value
+        self.task_status_change(self)
 
 
 # Classe para criar o aplicativo
@@ -135,13 +156,28 @@ class TodoApp(ft.Column):
         ]
 
     def add_task(self, e):
-        pass
+        if self.new_task.value:
+            task = Task(self.new_task.value,
+                        self.task_status_change, self.task_delete)
+            self.tasks.controls.append(task)
+            self.new_task.value = ""
+            self.new_task.focus()
+            self.update()
 
     def tabs_changed(self, e):
         self.update()
 
     def clear_completed_tasks(self, e):
-        pass
+        for task in self.tasks.controls[:]:
+            if task.complete:
+                self.task_delete(task)
+
+    def task_status_change(self, task):
+        self.update()
+
+    def task_delete(self, task):
+        self.tasks.controls.remove(task)
+        self.update()
 
 
 def main(page: ft.Page):
@@ -151,13 +187,13 @@ def main(page: ft.Page):
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.padding = 20
     page.theme_mode = ft.ThemeMode.LIGHT
+    page.update()
 
     # Criando a aplicação
     app = TodoApp()
 
     # Adicionando a aplicação à página
     page.add(app)
-    page.update()
 
 
 ft.app(target=main)
