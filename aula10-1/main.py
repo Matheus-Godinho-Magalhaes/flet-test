@@ -23,6 +23,8 @@ class Task(ft.Column):
         )
 
         self.display_view = ft.Row(
+            alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+            vertical_alignment=ft.CrossAxisAlignment.CENTER,
             controls=[
                 self.display_task,
                 ft.Row(
@@ -42,6 +44,8 @@ class Task(ft.Column):
         )
 
         self.edit_view = ft.Row(
+            alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+            vertical_alignment=ft.CrossAxisAlignment.CENTER,
             visible=False,
             controls=[
                 self.edit_name,
