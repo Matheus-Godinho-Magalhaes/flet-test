@@ -1,4 +1,5 @@
 import flet as ft
+import time
 
 
 def main(page: ft.Page):
@@ -14,6 +15,8 @@ def main(page: ft.Page):
 
     # Configurando o filepicker - através da documentação
     def on_dialog_result(e: ft.FilePickerResultEvent):
+        if not e.files:
+            return
         selected_files = e.files[0].name
         source_text.value = f"Arquivo selecionado: {selected_files}"
         page.update()
@@ -23,8 +26,15 @@ def main(page: ft.Page):
 
     # Escolher os arquivos
     choose_file_button = ft.ElevatedButton(
-        text="Selecione o arquivo...",
-        on_click=lambda _: file_picker.pick_files(allow_multiple=False)
+        on_click=lambda _: file_picker.pick_files(allow_multiple=False),
+        width=300,
+        height=50,
+        color="white",
+        bgcolor="black",
+        content=(
+            ft.Text(value="Selecione o arquivo..."),
+        ),
+
     )
 
     def convert_docx_to_pdf(e):
@@ -35,23 +45,36 @@ def main(page: ft.Page):
 
         # Caso na 2 tentativa dê certo - apenos limpo a tela
         result_text.value = ""
+        progress_bar.visible = True
         page.update()
 
         # Escrevo a lógica do meu programa de converter aqui ou importo de outro aqui e chamo ele aqui
         try:
-            pass
+            print("Passei no bloco try")
+            time.sleep(5)
+            result_text.value = "Programa finalizado com sucesso"
         except Exception as e:
-            pass
+            print(f"Para no exception devido a :{e}")
         finally:
-            pass
+            print("Fim do programa")
+            progress_bar.visible = False
+            page.update()
 
+    # Criando o botão para processar os arquivos
     convert_button = ft.ElevatedButton(
         text="Converter DOCX to PDF",
         on_click=convert_docx_to_pdf,
+        width=300,
+        height=50,
+        color="white",
+        bgcolor="black",
     )
 
-    source_text = ft.Text(value="")
-    result_text = ft.Text(value="")
+    # Criando a barra de progresso
+    progress_bar = ft.ProgressBar(color="purple", width=300, visible=False)
+
+    source_text = ft.Text(value=" ")
+    result_text = ft.Text(value=" ")
 
     page.add(
         ft.Container(
@@ -66,6 +89,7 @@ def main(page: ft.Page):
             content=ft.Column(
                 controls=[
                     ft.Row(
+                        alignment=ft.MainAxisAlignment.CENTER,
                         controls=[
                             ft.Text(value="Conversor .DOCX to .PDF",
                                     size=30,
@@ -75,24 +99,35 @@ def main(page: ft.Page):
                                     width=400)
                         ]
                     ),
-                    ft.Column(
+                    ft.Row(),
+                    ft.Row(
+                        alignment=ft.MainAxisAlignment.CENTER,
                         controls=[
                             choose_file_button
                         ]
                     ),
                     ft.Row(
+                        alignment=ft.MainAxisAlignment.CENTER,
                         controls=[
                             source_text
                         ]
                     ),
                     ft.Row(
+                        alignment=ft.MainAxisAlignment.CENTER,
                         controls=[
                             convert_button
                         ]
                     ),
                     ft.Row(
+                        alignment=ft.MainAxisAlignment.CENTER,
                         controls=[
                             result_text
+                        ]
+                    ),
+                    ft.Row(
+                        alignment=ft.MainAxisAlignment.CENTER,
+                        controls=[
+                            progress_bar
                         ]
                     )
                 ]
