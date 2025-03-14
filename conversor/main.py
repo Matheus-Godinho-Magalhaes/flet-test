@@ -5,8 +5,8 @@ import time
 def main(page: ft.Page):
     # Configurações iniciais da página da minha aplicação
     page.title = "Conversor de DOCX to PDF"
-    page.window.width = 520
-    page.window.height = 720
+    page.window.width = 380
+    page.window.height = 620
     page.theme_mode = ft.ThemeMode.DARK
     # Vai fazer com que o programa sempre fique por cima dos outros que estiverem abertos
     page.window.always_on_top = True
@@ -17,7 +17,7 @@ def main(page: ft.Page):
     def on_dialog_result(e: ft.FilePickerResultEvent):
         if not e.files:
             return
-        selected_files = e.files[0].name
+        selected_files = e.files[0].path
         source_text.value = f"Arquivo selecionado: {selected_files}"
         page.update()
 
@@ -31,10 +31,12 @@ def main(page: ft.Page):
         height=50,
         color="white",
         bgcolor="black",
-        content=(
-            ft.Text(value="Selecione o arquivo..."),
-        ),
-
+        content=ft.Text(
+            value="Escolher um arquivo...",
+            size=20,
+            color="#EB06FF",
+            height="bold"
+        )
     )
 
     def convert_docx_to_pdf(e):
@@ -62,31 +64,47 @@ def main(page: ft.Page):
 
     # Criando o botão para processar os arquivos
     convert_button = ft.ElevatedButton(
-        text="Converter DOCX to PDF",
         on_click=convert_docx_to_pdf,
         width=300,
         height=50,
         color="white",
         bgcolor="black",
+        content=ft.Text(
+            value="Converter DOCX to PDF",
+            size=20,
+            color="#EB06FF",
+            height="bold"
+        )
     )
 
     # Criando a barra de progresso
     progress_bar = ft.ProgressBar(color="purple", width=300, visible=False)
 
-    source_text = ft.Text(value=" ")
-    result_text = ft.Text(value=" ")
+    source_text = ft.Text(value="",
+                          size=16,
+                          color="#18DCFF",
+                          height="bold",
+                          max_lines=4,
+                          width=300)
+    result_text = ft.Text(value="",
+                          size=16,
+                          color="#18DCFF",
+                          height="bold",
+                          max_lines=4,
+                          width=300)
 
     page.add(
         ft.Container(
-            width=500,
-            height=670,
+            width=360,
+            height=570,
             bgcolor="#341F97",
             border_radius=35,
-            padding=ft.padding.only(left=20, top=20, right=20, bottom=20),
+            padding=ft.padding.only(left=20, top=60, right=20, bottom=20),
             # Para um container não utilizamos o controls e sim o content que seria equivalente ao controls
             # Aqui nós fizemos por coluna pq ai vai ficar um item debaixo do outro, se fosse por linha
             # seria um item do lado do outro e não embaixo.
             content=ft.Column(
+                spacing=15,
                 controls=[
                     ft.Row(
                         alignment=ft.MainAxisAlignment.CENTER,
@@ -95,41 +113,43 @@ def main(page: ft.Page):
                                     size=30,
                                     color="#EB06FF",
                                     weight="bold",
-                                    max_lines=1,
-                                    width=400)
+                                    max_lines=2,
+                                    width=360)
                         ]
                     ),
-                    ft.Row(),
-                    ft.Row(
+                    ft.Column(),
+                    ft.Column(),
+                    ft.Column(
                         alignment=ft.MainAxisAlignment.CENTER,
                         controls=[
+                            ft.Text(
+                                value="Selecione um arquivo .docx",
+                                size=20,
+                                weight="bold"
+                            ),
                             choose_file_button
                         ]
                     ),
                     ft.Row(
-                        alignment=ft.MainAxisAlignment.CENTER,
                         controls=[
                             source_text
                         ]
                     ),
                     ft.Row(
-                        alignment=ft.MainAxisAlignment.CENTER,
                         controls=[
                             convert_button
                         ]
                     ),
                     ft.Row(
-                        alignment=ft.MainAxisAlignment.CENTER,
                         controls=[
                             result_text
                         ]
                     ),
                     ft.Row(
-                        alignment=ft.MainAxisAlignment.CENTER,
                         controls=[
                             progress_bar
                         ]
-                    )
+                    ),
                 ]
             )
         )
