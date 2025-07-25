@@ -1,0 +1,41 @@
+# Ignorar arquivos sensíveis
+.env
+*.env
+
+# Ignorar arquivos comuns de sistema operacional e editor
+.DS_Store
+Thumbs.db
+*.log
+*.sqlite3
+
+# Ignorar diretórios comuns de build e dependências
+node_modules/
+dist/
+build/
+.cache/
+tmp/
+
+# Ignorar arquivos de documentos comuns (se forem gerados ou não parte do projeto principal)
+*.pdf
+*.docx
+*.xlsx
+
+# Ignorar arquivos específicos de IDEs (exemplos para IDEs comuns)
+.idea/
+.vscode/
+*.iml
+.project
+.classpath
+.settings/
+
+# Ignorar arquivos Python compilados (se você estiver usando Python)
+__pycache__/
+*.pyc
+
+# Ignorar arquivos específicos do Ruby (se você estiver usando Ruby)
+.bundle/
+Gemfile.lock
+
+# Você pode adicionar mais arquivos ou padrões específicos conforme necessário
+.db
+*.db
