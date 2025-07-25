@@ -4,7 +4,7 @@ import time
 
 def main(page: ft.Page):
     # Configurações iniciais da página da minha aplicação
-    page.title = "Conversor de DOCX to PDF"
+    page.title = "Conversor de DOCX to PDF!!"
     page.window.width = 380
     page.window.height = 620
     page.theme_mode = ft.ThemeMode.DARK
